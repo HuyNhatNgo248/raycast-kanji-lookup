@@ -1,5 +1,6 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
+  "version": "1.0.0",
   "name": "kanji-lookup",
   "title": "Kanji Lookup",
   "description": "Translate kanji to English and get hiragana readings",
