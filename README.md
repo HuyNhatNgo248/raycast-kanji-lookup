@@ -17,6 +17,17 @@ Powered by the [Jisho](https://jisho.org) dictionary API. No API key, no account
 - Node.js
 - Internet connection (calls Jisho API)
 
+## Setup API URL
+
+To enable example sentence search, you must set the backend API URL:
+
+1. Open Raycast → Extensions → Kanji Lookup.
+2. Paste this URL in the API URL field:
+
+<https://japsen-lookup.vercel.app>
+
+This enables fast example sentence search for your lookups.
+
 ## Installation
 
 ```bash
