@@ -11,6 +11,8 @@ Powered by the [Jisho](https://jisho.org) dictionary API. No API key, no account
 - Paste from clipboard instantly with ⌘V
 - Copy hiragana or English from the result
 
+[Watch the video](https://youtu.be/eRyUzdhNslQ)
+
 ## Requirements
 
 - [Raycast](https://raycast.com)
@@ -31,7 +33,7 @@ This enables fast example sentence search for your lookups.
 ## Installation
 
 ```bash
-git clone <your-repo>
+git clone <repo>
 cd kanji-lookup
 npm install
 npm run dev
