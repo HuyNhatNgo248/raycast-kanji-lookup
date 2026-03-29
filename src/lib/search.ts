@@ -1,4 +1,4 @@
-import { getPreferenceValues } from "@raycast/api";
+// import { getPreferenceValues } from "@raycast/api";
 
 export async function lookupKanji(text: string): Promise<LookupResult> {
   // Only fetch kanji characters (Han script)
@@ -59,9 +59,11 @@ export async function lookupSentences(
   word: string,
   limit = 20,
 ): Promise<SentencePair[]> {
-  const preferences = getPreferenceValues<Preferences>();
+  // const preferences = getPreferenceValues<Preferences>();
 
-  const API_URL = preferences.apiUrl;
+  // const API_URL = preferences.apiUrl;
+
+  const API_URL = "https://japsen-lookup.vercel.app";
 
   const res = await fetch(
     `${API_URL}/api/sentences/search?word=${encodeURIComponent(word)}&limit=${limit}`,

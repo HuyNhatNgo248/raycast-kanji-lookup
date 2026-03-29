@@ -7,7 +7,6 @@ import {
   Toast,
   showToast,
   useNavigation,
-  openExtensionPreferences,
 } from "@raycast/api";
 import { useCallback, useState } from "react";
 import { lookupKanji } from "./lib/search";
@@ -73,11 +72,6 @@ export default function Command() {
             icon={Icon.Clipboard}
             shortcut={{ modifiers: ["cmd"], key: "v" }}
             onAction={handlePasteAndLookup}
-          />
-          <Action
-            title="Update API URL"
-            icon={Icon.RotateClockwise}
-            onAction={openExtensionPreferences}
           />
         </ActionPanel>
       }

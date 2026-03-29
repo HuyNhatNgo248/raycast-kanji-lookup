@@ -41,14 +41,5 @@
     "lint": "ray lint",
     "publish": "npx @raycast/api@latest publish",
     "build:kanji": "ts-node src/scripts/build-index.ts"
-  },
-  "preferences": [
-    {
-      "name": "apiUrl",
-      "type": "textfield",
-      "required": true,
-      "title": "API URL",
-      "description": "http://localhost:3001/api"
-    }
-  ]
+  }
 }
