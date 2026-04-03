@@ -3,9 +3,12 @@
   "version": "1.0.0",
   "name": "kanji-lookup",
   "title": "Kanji Lookup",
+  "files": [
+    "assets"
+  ],
   "description": "Translate kanji to English and get hiragana readings",
   "icon": "extension-icon.png",
-  "author": "your-raycast-username",
+  "author": "Huy",
   "categories": [
     "Productivity",
     "Developer Tools"

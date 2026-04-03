@@ -21,7 +21,7 @@ function buildMarkdown(
     md.horizontalRule,
 
     md.heading("Reading", { level: 2 }),
-    result.hiragana,
+    result.furigana,
 
     md.heading("Meaning", { level: 2 }),
     result.english,
@@ -55,13 +55,13 @@ export default function ResultDetail({ result }: ResultDetailProps) {
   return (
     <Detail
       markdown={buildMarkdown(result, sentences)}
-      navigationTitle={`${result.original} — ${result.hiragana}`}
+      navigationTitle={`${result.original} — ${result.furigana}`}
       metadata={<KanjiMetadata result={result} />}
       actions={
         <ActionPanel>
           <Action.CopyToClipboard
             title="Copy Hiragana"
-            content={result.hiragana}
+            content={result.furigana}
             icon={Icon.CopyClipboard}
           />
           <Action.CopyToClipboard

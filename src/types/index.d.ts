@@ -1,15 +1,30 @@
-interface KanjiReading {
-  kanji: string;
-  onReadings: string[];
-  kunReadings: string[];
+interface Kanji {
+  literal: string;
+  onyomi?: string[];
+  kunyomi?: string[];
+  meanings: string[];
+}
+
+interface Word {
+  reading: {
+    kana: string;
+    kanji: string;
+  };
+  common: boolean;
+  senses: [{ glosses: string[]; pos: { [string]: string } }];
+}
+
+interface Jotoba {
+  kanji: Kanji[];
+  words: Word[];
 }
 
 interface LookupResult {
   original: string;
-  hiragana: string;
+  furigana: string;
   english: string;
   partOfSpeech: string;
-  readings: KanjiReading[];
+  kanji: Kanji[];
 }
 
 type SentencePair = {

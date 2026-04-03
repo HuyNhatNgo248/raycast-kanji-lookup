@@ -1,57 +1,41 @@
-// import { getPreferenceValues } from "@raycast/api";
+function filterKanjiChars(kanji: Kanji[], originalKanji: string) {
+  const originalKanjiSet = new Set(originalKanji.split(""));
+
+  return kanji.filter(
+    (c) => /\p{Script=Han}/u.test(c.literal) && originalKanjiSet.has(c.literal),
+  );
+}
 
 export async function lookupKanji(text: string): Promise<LookupResult> {
-  // Only fetch kanji characters (Han script)
-  const kanjiChars = text.split("").filter((c) => /\p{Script=Han}/u.test(c));
+  const jotobaRes = await fetch("https://jotoba.de/api/search/words", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: text,
+      language: "English",
+      no_english: false,
+    }),
+  });
 
-  const [jishoRes, ...kanjiRes] = await Promise.all([
-    fetch(
-      `https://jisho.org/api/v1/search/words?keyword=${encodeURIComponent(text)}`,
-    ),
-    ...kanjiChars.map((c) =>
-      fetch(`https://kanjiapi.dev/v1/kanji/${encodeURIComponent(c)}`),
-    ),
-  ]);
+  if (!jotobaRes.ok) throw new Error(`Jotoba error ${jotobaRes.status}`);
 
-  if (!jishoRes.ok) throw new Error(`Jisho error ${jishoRes.status}`);
-  const jishoData = await jishoRes.json();
+  const jotobaData = (await jotobaRes.json()) as Jotoba;
 
-  if (!jishoData.data || jishoData.data.length === 0)
+  if (jotobaData.kanji.length === 0 || jotobaData.words.length === 0)
     throw new Error("No results found");
 
-  const entry = jishoData.data[0];
-  const hiraganaReading = entry.japanese[0];
+  const entry = jotobaData.words[0];
   const sense = entry.senses[0];
 
-  const readings: KanjiReading[] = await Promise.all(
-    kanjiRes.map(async (res, idx) => {
-      try {
-        if (!res || !res.ok) throw Error();
-
-        const kanjiData = await res.json();
-        return {
-          kanji: kanjiData.kanji ?? kanjiChars[idx],
-          onReadings: kanjiData.on_readings ?? [],
-          kunReadings: kanjiData.kun_readings ?? [],
-        };
-      } catch (e) {
-        console.error(e);
-
-        return {
-          kanji: kanjiChars[idx],
-          onReadings: [],
-          kunReadings: [],
-        };
-      }
-    }),
-  );
+  const pos = Object.keys(sense.pos)[0];
+  const original = entry.reading.kanji || "";
 
   return {
-    original: hiraganaReading.word ?? text,
-    hiragana: hiraganaReading.reading ?? "",
-    english: sense.english_definitions.join(", "),
-    partOfSpeech: sense.parts_of_speech?.[0] ?? "",
-    readings,
+    original,
+    furigana: entry.reading.kana || "",
+    english: sense.glosses.join(", ") || "",
+    partOfSpeech: pos === "0" ? "なし" : pos,
+    kanji: filterKanjiChars(jotobaData.kanji, original),
   };
 }
 
@@ -59,10 +43,6 @@ export async function lookupSentences(
   word: string,
   limit = 20,
 ): Promise<SentencePair[]> {
-  // const preferences = getPreferenceValues<Preferences>();
-
-  // const API_URL = preferences.apiUrl;
-
   const API_URL = "https://japsen-lookup.vercel.app";
 
   const res = await fetch(
